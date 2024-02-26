@@ -210,32 +210,30 @@ def findMoveNegaMaxAlphaBeta(gs, validMoves, depth, alpha, beta, turnMultiplier)
     global nextMove, counter
     opponentMoves = []
     counter += 1
-    if depth == 0:
+    if depth == 0 or validMoves is None:
         # game phase logic could go here
         return scoreBoard(gs) * turnMultiplier
-    if gs.checkmate:
-        CHECKMATE
-    if gs.stalemate:
-        return 0
-
 
     optimumScore = -CHECKMATE
     for move in validMoves:
         gs.makeMove(move)
         opponentMoves = gs.getValidMoves()
+
         if opponentMoves is not None:
             prioritizedMoves = sorted(opponentMoves, key=lambda x: (x.isMoveCapture, x.threats, x.protects, x.moves), reverse=True)
             score = -(findMoveNegaMaxAlphaBeta(gs, prioritizedMoves, depth-1, -beta, -alpha, -turnMultiplier))
+            gs.undoMove()
             if score > optimumScore:
                 optimumScore = score
                 if depth == DEPTH:
                     nextMove = move
                     print(score, move.getChessNotation())
-            gs.undoMove()
             if optimumScore > alpha:
                 alpha = optimumScore
             if alpha >= beta:
                 break
+        else:
+            gs.undoMove()
     return optimumScore
 
 def scoreBoard(gs):
