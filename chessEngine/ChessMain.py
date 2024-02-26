@@ -30,8 +30,8 @@ def main():
     row = -1
     animate = False
     gameOver = False
-    playerOne = False
-    playerTwo = True
+    playerOne = True
+    playerTwo = False
     AIThinking = False
 
     nextWhiteHumanPawnBiasScore = SmartMoveFinder.whiteHumanPawnBiasScore.copy()

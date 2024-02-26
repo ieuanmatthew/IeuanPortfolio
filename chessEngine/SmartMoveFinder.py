@@ -210,6 +210,10 @@ def findMoveNegaMaxAlphaBeta(gs, validMoves, depth, alpha, beta, turnMultiplier)
     global nextMove, counter
     opponentMoves = []
     counter += 1
+    if gs.checkmate:
+        CHECKMATE
+    if gs.stalemate:
+        return 0
     if depth == 0 or validMoves is None:
         # game phase logic could go here
         return scoreBoard(gs) * turnMultiplier
@@ -238,13 +242,13 @@ def findMoveNegaMaxAlphaBeta(gs, validMoves, depth, alpha, beta, turnMultiplier)
 
 def scoreBoard(gs):
     score = 0
-
     for row in range(len(gs.board)):
         for col in range(len(gs.board[row])):
             square = gs.board[row][col]
             if square != '--':
                 #score positionally
                 piecePositionScore = 0
+                humanBiasScore = 0
                 if square[1] == 'p':
                     piecePositionScore = piecePositionScores[square][row][col] * .1
                 elif square[1] == 'K':
